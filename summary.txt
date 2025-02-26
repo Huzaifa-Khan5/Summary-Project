@@ -1,0 +1,25 @@
+This chapter of "Automate the Boring Stuff with Python" details working with PDF and Word documents using PyPDF2 and python-docx modules respectively.  It emphasizes that these are binary files, more complex than plain text, requiring specialized modules for interaction.
+
+**PDF Document Handling (PyPDF2):**
+
+The chapter begins by explaining the PyPDF2 module, its installation ("pip install PyPDF2"), and its limitations.  While capable of extracting text, it may not perfectly reproduce formatting or handle all PDFs.  Text extraction is demonstrated using 'meetingminutes.pdf' (available for download from the provided URL), showcasing the `PdfFileReader`, `getPage()`, and `extractText()` methods.  Page indexing starts at 0.
+
+Encrypted PDFs are addressed, showing how to check for encryption (`pdfReader.isEncrypted`), decrypt using the correct password (`pdfReader.decrypt()`), and handle decryption errors.  Incorrect passwords result in a return value of 0.  Decryption only affects the in-memory object; the file remains encrypted on disk.
+
+PyPDF2's PDF creation capabilities are limited to manipulating existing PDFs—copying, rotating (using `rotateClockwise()` and `rotateCounterClockwise()`), merging (`mergePage()`), and encrypting.  Examples demonstrate combining multiple PDFs ('meetingminutes.pdf' and 'meetingminutes2.pdf', also available for download) into a single file ('combinedminutes.pdf').  The `addPage()` method only adds pages to the end.  Rotating and watermarking pages are also illustrated.  Encrypting a PDF involves using the `encrypt()` method with a password.
+
+A project is presented: combining multiple PDFs, skipping the first page (cover sheet) of each. This involves using `os.listdir()`, sorting filenames, creating a `PdfFileWriter` object, iterating through PDFs, adding pages (excluding the first), and saving the combined PDF as 'allminutes.pdf'.
+
+**Word Document Handling (python-docx):**
+
+The python-docx module is introduced, highlighting the installation ("pip install python-docx") and the importance of using "python-docx" and not "docx" during installation and importing.  Alternative word processors (LibreOffice Writer and OpenOffice Writer) are suggested.  The core data structures are explained: `Document` objects contain lists of `Paragraph` objects, which in turn contain lists of `Run` objects.  A `Run` represents a contiguous section of text with consistent styling.
+
+Reading Word documents is demonstrated using 'demo.docx' (available for download), showing how to access paragraph text (`doc.paragraphs[i].text`) and individual run text (`doc.paragraphs[i].runs[j].text`). The `getText()` function is introduced to efficiently extract all text from a .docx file into a single string.  Customization options for `getText()` (adding indentation, double spacing) are provided.
+
+Styling is covered, explaining Paragraph, Character, and Linked styles.  Style names (without spaces) are set using the `style` attribute for both `Paragraph` and `Run` objects.  Linked styles require adding 'Char' to the style name for `Run` objects.  Creating custom styles requires manual creation within a Word document before opening it with Python-docx.
+
+`Run` object attributes (bold, italic, underline, etc.) are described.  Their values can be True, False, or None (defaulting to the style).  Modifying a Word document's styling is illustrated by changing styles and attributes in 'demo.docx' and saving it as 'restyled.docx'.
+
+Creating Word documents is shown using `docx.Document()`, `add_paragraph()`, and `add_run()`.  Adding headings (`add_heading()`), line breaks, page breaks (`add_break()` with `docx.text.WD_BREAK.PAGE`), and pictures (`add_picture()`) are demonstrated.  Image dimensions can be specified using `docx.shared.Inches()` and `docx.shared.Cm()`.
+
+The chapter concludes with a summary reiterating key concepts and presenting practice questions and projects: encrypting PDFs in a directory, generating custom invitations, and creating a brute-force PDF password cracker.
